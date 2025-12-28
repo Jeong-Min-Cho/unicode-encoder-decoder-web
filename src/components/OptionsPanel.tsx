@@ -1,5 +1,6 @@
 import type { Component } from "solid-js";
 import type { ConverterOptions } from "../hooks/useConverter";
+import type { TranslationKey } from "../hooks/useI18n";
 
 interface OptionsPanelProps {
   options: ConverterOptions;
@@ -8,6 +9,7 @@ interface OptionsPanelProps {
     value: ConverterOptions[K]
   ) => void;
   disabled?: boolean;
+  t: (key: TranslationKey) => string;
 }
 
 interface ToggleProps {
@@ -24,7 +26,7 @@ const Toggle: Component<ToggleProps> = (props) => {
         type="button"
         role="switch"
         aria-checked={props.checked}
-        class={`toggle-switch ${props.checked ? "active" : ""}`}
+        class={`toggle ${props.checked ? "toggle-checked" : ""}`}
         onClick={() => props.onChange(!props.checked)}
       >
         <span class="toggle-dot" />
@@ -46,25 +48,25 @@ const Toggle: Component<ToggleProps> = (props) => {
 const OptionsPanel: Component<OptionsPanelProps> = (props) => {
   return (
     <div
-      class={`flex flex-wrap gap-6 ${props.disabled ? "opacity-50 pointer-events-none" : ""}`}
+      class="flex flex-col sm:flex-row sm:flex-wrap gap-4 sm:gap-6"
     >
       <Toggle
-        label="Preserve ASCII"
+        label={props.t("preserveAscii")}
         checked={props.options.preserveAscii}
         onChange={(v) => props.onOptionChange("preserveAscii", v)}
-        description="Keep A-Z, a-z, 0-9, etc."
+        description={props.t("preserveAsciiDesc")}
       />
       <Toggle
-        label="Preserve Latin-1"
+        label={props.t("preserveLatin1")}
         checked={props.options.preserveLatin1}
         onChange={(v) => props.onOptionChange("preserveLatin1", v)}
-        description="Keep accented chars like é, ñ"
+        description={props.t("preserveLatin1Desc")}
       />
       <Toggle
-        label="Uppercase"
+        label={props.t("uppercase")}
         checked={props.options.uppercase}
         onChange={(v) => props.onOptionChange("uppercase", v)}
-        description="Use uppercase hex digits"
+        description={props.t("uppercaseDesc")}
       />
     </div>
   );

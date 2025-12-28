@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "solid-js": "^1.9.3",
-    "unicode-escaper": "file:../unicode-escaper"
+    "unicode-escaper": "^1.0.1"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",

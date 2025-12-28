@@ -1,4 +1,5 @@
 import { type Component, createSignal, Show } from "solid-js";
+import type { TranslationKey } from "../hooks/useI18n";
 
 interface TextPanelProps {
   label: string;
@@ -7,6 +8,7 @@ interface TextPanelProps {
   readonly?: boolean;
   placeholder?: string;
   stats: { chars: number; codePoints: number };
+  t: (key: TranslationKey) => string;
 }
 
 const TextPanel: Component<TextPanelProps> = (props) => {
@@ -36,18 +38,18 @@ const TextPanel: Component<TextPanelProps> = (props) => {
       <div class="stats-bar justify-between">
         <div class="flex gap-4">
           <span>
-            <strong>{props.stats.chars}</strong> chars
+            <strong>{props.stats.chars}</strong> {props.t("chars")}
           </span>
           <span
-            title="Actual Unicode characters. Emoji count as 1 code point but 2 chars in JavaScript."
+            title={props.t("codePointsTooltip")}
             class="cursor-help border-b border-dotted border-current"
           >
-            <strong>{props.stats.codePoints}</strong> code points
+            <strong>{props.stats.codePoints}</strong> {props.t("codePoints")}
           </span>
         </div>
         <button
           onClick={handleCopy}
-          class={`btn btn-secondary text-xs flex items-center gap-1.5 ${copied() ? "copied-feedback" : ""}`}
+          class={`copy-btn flex items-center gap-1 ${copied() ? "copied-feedback" : ""}`}
           disabled={!props.value}
         >
           <Show
@@ -62,7 +64,7 @@ const TextPanel: Component<TextPanelProps> = (props) => {
                     d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
                   />
                 </svg>
-                Copy
+                {props.t("copy")}
               </>
             }
           >
@@ -74,7 +76,7 @@ const TextPanel: Component<TextPanelProps> = (props) => {
                 d="M5 13l4 4L19 7"
               />
             </svg>
-            <span class="text-green-500">Copied!</span>
+            <span class="text-green-500">{props.t("copied")}</span>
           </Show>
         </button>
       </div>

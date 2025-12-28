@@ -1,9 +1,13 @@
 import type { Component } from "solid-js";
 import type { Theme } from "../hooks/useTheme";
+import type { Language, TranslationKey } from "../hooks/useI18n";
 
 interface HeaderProps {
   theme: Theme;
   onToggleTheme: () => void;
+  lang: Language;
+  onToggleLang: () => void;
+  t: (key: TranslationKey) => string;
 }
 
 const Header: Component<HeaderProps> = (props) => {
@@ -26,9 +30,18 @@ const Header: Component<HeaderProps> = (props) => {
           </svg>
         </div>
         <div>
-          <h1 class="text-xl font-bold">Unicode Encoder/Decoder</h1>
+          <h1 class="text-xl font-bold">{props.t("title")}</h1>
           <p class="text-sm" style={{ color: "var(--text-muted)" }}>
-            Powered by{" "}
+            {props.t("poweredBy")}{" "}
+            <a
+              href="https://github.com/Jeong-Min-Cho/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-primary-500 hover:text-primary-600 transition-colors"
+            >
+              Jeong Min Cho
+            </a>
+            's{" "}
             <a
               href="https://www.npmjs.com/package/unicode-escaper"
               target="_blank"
@@ -41,32 +54,52 @@ const Header: Component<HeaderProps> = (props) => {
         </div>
       </div>
 
-      <button
-        onClick={props.onToggleTheme}
-        class="btn btn-secondary flex items-center gap-2"
-        aria-label={`Switch to ${props.theme === "light" ? "dark" : "light"} mode`}
-      >
-        {props.theme === "light" ? (
+      <div class="flex items-center gap-2">
+        {/* Language Toggle */}
+        <button
+          onClick={props.onToggleLang}
+          class="btn btn-secondary flex items-center gap-2"
+          aria-label={props.lang === "en" ? "Switch to Korean" : "Switch to English"}
+        >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
               stroke-width="2"
-              d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+              d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"
             />
           </svg>
-        ) : (
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-            />
-          </svg>
-        )}
-        <span class="hidden sm:inline">{props.theme === "light" ? "Dark" : "Light"}</span>
-      </button>
+          <span class="hidden sm:inline">{props.lang === "en" ? "한국어" : "EN"}</span>
+        </button>
+
+        {/* Theme Toggle */}
+        <button
+          onClick={props.onToggleTheme}
+          class="btn btn-secondary flex items-center gap-2"
+          aria-label={props.theme === "light" ? "Switch to dark mode" : "Switch to light mode"}
+        >
+          {props.theme === "light" ? (
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+              />
+            </svg>
+          ) : (
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+              />
+            </svg>
+          )}
+          <span class="hidden sm:inline">{props.theme === "light" ? props.t("dark") : props.t("light")}</span>
+        </button>
+      </div>
     </header>
   );
 };
